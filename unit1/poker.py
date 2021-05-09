@@ -10,6 +10,17 @@ def card_ranks(hand):
     return ranks
 
 
+def straight(ranks):
+    "Return True if the ordered ranks form a 5-card straight."
+    return (max(ranks) - min(ranks) == 4) and len(set(ranks)) == 5
+
+
+def flush(hand):
+    "Return True if all the cards have the same suit."
+    suits = [s for r, s in hand]
+    return len(set(suits)) == 1
+
+
 def hand_rank(hand):
     "Return a value ndicating the ranking of a hand."
     ranks = card_ranks(hand)
@@ -38,6 +49,10 @@ def test():
     sf = "6C 7C 8C 9C TC".split()
     fk = "9D 9H 9S 9C 7D".split()
     fh = "TD TC TH 7C 7D".split()
+    assert straight([9, 8, 7, 6, 5]) == True
+    assert straight([9, 8, 7, 6, 5]) == False
+    assert flush(sf) == True
+    assert flush(fk) == False
     assert card_ranks(sf) == [10, 9, 8, 7, 6]
     assert card_ranks(fk) == [9, 9, 9, 9, 7]
     assert card_ranks(fh) == [10, 10, 10, 7, 7]
