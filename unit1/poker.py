@@ -84,6 +84,10 @@ def group(items):
     return sorted(groups, reverse=True)
 
 
+def unzip(pairs):
+    return zip(*pairs)
+
+
 def test():
     "Test cases for the functions in poker program."
     sf = "6C 7C 8C 9C TC".split()  # straight flush
