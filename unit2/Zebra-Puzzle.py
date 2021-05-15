@@ -1,3 +1,4 @@
+import time
 import itertools
 
 
@@ -36,4 +37,11 @@ def zebra_puzzle():
                 )
 
 
-print(zebra_puzzle())
+def t():
+    t0 = time.time()
+    zebra_puzzle()
+    t1 = time.time()
+    return t1 - t0
+
+
+print(t())
