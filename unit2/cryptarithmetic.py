@@ -1,3 +1,4 @@
+import enum
 import string
 import re
 import itertools
@@ -29,6 +30,17 @@ def fill_in(formula):
         yield formula.translate(table)
 
 
+def compile_word(word):
+    """Compile a word of uppercase letters as numberic digits.
+    E.g., compile_word('YOU') => '(1*U+10*0+100*Y)'
+    Non-uppercase words unchanged: compile_word('+') => '+'"""
+    if word.isupper():
+        terms = [('%s*%s' % (10**i, d)) for (i, d) in enumerate(word[::-1])]
+        return '(' + '+'.join(terms) + ')'
+    else:
+        return word
+
+
 def timedcall(fn, *args):
     "Call function with args; return the time in seconds and return result."
     t0 = time.time()
@@ -38,6 +50,8 @@ def timedcall(fn, *args):
 
 
 examples = """TWO + TWO == FOUR
+
+
 A**2 + B**2 == C**2
 A**2 + BE**2 == BY**2
 X / X == X
