@@ -37,11 +37,12 @@ def zebra_puzzle():
                 )
 
 
-def t():
+def timecall(fn, *args):
+    "Call function with args; return the time in seconds and return result."
     t0 = time.time()
-    zebra_puzzle()
+    result = fn(*args)
     t1 = time.time()
-    return t1 - t0
+    return t1 - t0, result
 
 
-print(t())
+print(timecall(zebra_puzzle))
