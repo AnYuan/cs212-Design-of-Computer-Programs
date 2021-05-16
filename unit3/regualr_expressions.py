@@ -1,6 +1,6 @@
 def search(pattern, text):
     "Return True if pattern appears anywhere in text."
-    if pattern.startswitch('^'):
+    if pattern.startswith('^'):
         return match(pattern[1:], text)
     else:
         return match('.*' + pattern, text)
