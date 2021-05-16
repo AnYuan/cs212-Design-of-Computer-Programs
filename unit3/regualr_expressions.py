@@ -42,4 +42,6 @@ def match1(p, text):
 
 def match_star(p, pattern, text):
     """Return true if any number of char p, followed by pattern, matches text."""
-    return (match(pattern, text) or (match1(p, text) and match_star(p, pattern, text[1:])))
+    return (match(pattern, text) or
+            (match1(p, text) and
+            match_star(p, pattern, text[1:])))
