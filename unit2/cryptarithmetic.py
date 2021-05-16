@@ -35,7 +35,8 @@ def compile_word(word):
     E.g., compile_word('YOU') => '(1*U+10*0+100*Y)'
     Non-uppercase words unchanged: compile_word('+') => '+'"""
     if word.isupper():
-        terms = [('%s*%s' % (10**i, d)) for (i, d) in enumerate(word[::-1])]
+        terms = [('%s*%s' % (10**i, d))
+                 for (i, d) in enumerate(word[::-1])]  # reverse the word
         return '(' + '+'.join(terms) + ')'
     else:
         return word
@@ -45,7 +46,7 @@ def faster_solve(formula):
     """Given a formula like 'ODD + ODD == EVEN', fill in digits to solve it.
     Input formula is a string; output is a digit-filled-in string or None.
     This version precompiles the formula; only one eval per formula."""
-    f, letters = compile_formula(formula)
+    f, letters = compile_formula(formula, True)
     for digits in itertools.permutations((1, 2, 3, 4, 5, 6, 7, 8, 9, 0), len(letters)):
         try:
             if f(*digits) is True:
@@ -66,7 +67,7 @@ def compile_formula(formula, verbose=False):
     f = 'lambda %s: %s' % (parms, body)
     if verbose:
         print(f)
-        return eval(f), letters
+    return eval(f), letters
 
 
 def timedcall(fn, *args):
@@ -100,7 +101,7 @@ def test():
     t0 = time.time()
     for example in examples:
         print(13*' ', example)
-        print('%6.4f sec: %s ' % timedcall(solve, example))
+        print('%6.4f sec: %s ' % timedcall(faster_solve, example))
     print('%6.4f tot.' % (time.time()-t0))
 
 
