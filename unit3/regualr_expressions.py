@@ -45,3 +45,10 @@ def match_star(p, pattern, text):
     return (match(pattern, text) or
             (match1(p, text) and
             match_star(p, pattern, text[1:])))
+
+
+def test():
+    assert search('baa*!', 'Sheep said baaaa!')
+    assert search('baa*!', 'Sheep said baaaa humbug') == False
+    assert match('baa*!', 'Sheep said baaaa!') == False
+    assert match('baa*!', 'baaaaaaaaa! said the sheep')
