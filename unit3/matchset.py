@@ -26,7 +26,7 @@ def search(pattern, text):
 
 def match(pattern, text):
     "Match pattern against start of text; return longest match found or None."
-    remainders = matchset(pattern, text)
+    remainders = pattern(text)
     if remainders:
         shortest = min(remainders, key=len)
         return text[:len(text) - len(shortest)]
@@ -65,17 +65,21 @@ def components(pattern):
     return pattern[0], x, y
 
 
-def lit(string): return ('lit', string)
-def seq(x, y): return ('seq', x, y)
-def alt(x, y): return ('alt', x, y)
-def star(x): return ('star', x)
-def plus(x): return seq(x, star(x))
-def opt(x): return alt(lit(''), x)  # opt(x) means that x is optional
-def oneof(chars): return ('oneof', tuple(chars))
+def lit(s): return lambda t: set([t[len(s):]]) if t.startswith(s) else null
+def seq(x, y): return lambda t: set().union(*map(y, x(t)))
+def alt(x, y): return lambda t: x(t) | y(t)
 
 
-dot = ('dot',)
-eol = ('eol',)
+def oneof(chars): return lambda t: set(
+    [t[1:]]) if (t and t[0] in chars) else null
+
+
+def dot(t): return set([t[1:]]) if t else null
+def eol(t): return set(['']) if t == '' else null
+
+
+def star(x): return lambda t: (set([t]) | set(
+    t2 for t1 in x(t) if t1 != t for t2 in star(x)(t1)))
 
 
 def test():
